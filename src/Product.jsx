@@ -1,21 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-const Product = ({ id, title, description, colors = [], cost, inStock }) => {
-  const [selectedColor, setSelectedColor] = useState('');
-  const [quantity, setQuantity] = useState(1);
+const Product = ({
+  id,
+  title,
+  description,
+  colors = [],
+  cost,
+  amountInStock,
+}) => {
+  const [selectedColor, setSelectedColor] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [inStock, setInStock] = useState(amountInStock);
 
   useEffect(() => {
-    console.log(selectedColor);
-  }, [selectedColor]);
+    console.log(inStock);
+  }, [inStock]);
 
   const setColor = (color) => {
     let colors = {
-      red: '#d92626',
-      blue: '#2626d9',
-      green: '#136c13',
-      yellow: '#d9d926',
-      black: '#333333',
-      white: '#ffffff',
+      red: "#d92626",
+      blue: "#2626d9",
+      green: "#136c13",
+      yellow: "#d9d926",
+      black: "#333333",
+      white: "#ffffff",
     };
 
     return colors[color];
@@ -23,6 +31,7 @@ const Product = ({ id, title, description, colors = [], cost, inStock }) => {
 
   const onProductIncr = () => {
     setQuantity((prevState) => prevState + 1);
+    setInStock((prevState) => prevState - 1);
   };
 
   const onProductDecr = () => {
@@ -33,10 +42,11 @@ const Product = ({ id, title, description, colors = [], cost, inStock }) => {
         return prevState - 1;
       }
     });
+    setInStock((prevState) => prevState - 1);
   };
 
   return (
-    <div className={`product ${quantity < 1 ? 'unfocused' : ''}`}>
+    <div className="product">
       <div className="product-content">
         <img src="/item.jpg " className="product-img" />
         <div className="product-details">
@@ -44,26 +54,31 @@ const Product = ({ id, title, description, colors = [], cost, inStock }) => {
           <p>{description}</p>
           <div className="colors-container">
             {colors.map((color) => {
-              return (
-                <span
-                  className={`product-color ${
-                    selectedColor === color ? 'selected' : ''
-                  }`}
-                  style={{ background: `${setColor(color)}` }}
-                  onClick={() => setSelectedColor(color)}
-                ></span>
-              );
+              if (selectedColor === "") {
+                return (
+                  <span
+                    className="product-color"
+                    style={{ backgroundColor: setColor(color) }}
+                    onClick={() => setSelectedColor(color)}
+                  ></span>
+                );
+              } else {
+                return (
+                  <span
+                    className={`product-color ${
+                      selectedColor === color ? "selected" : "unselected"
+                    }`}
+                    style={{ backgroundColor: setColor(color) }}
+                    onClick={() => setSelectedColor(color)}
+                  ></span>
+                );
+              }
             })}
-
-            {/* <span
-              className="product-color"
-              style={{ background: 'red' }}
-            ></span> */}
           </div>
           <p className="product-cost">
             ${cost} <span className="product-quantity">x {quantity}</span>
           </p>
-          <p>{inStock ? 'In Stock!' : 'Not In Stock'}</p>
+          <p>{inStock ? "In Stock!" : "Not In Stock"}</p>
         </div>
       </div>
       <div className="product-actions">
@@ -80,6 +95,10 @@ const Product = ({ id, title, description, colors = [], cost, inStock }) => {
       </div>
     </div>
   );
+};
+
+Product.defaultProps = {
+  colors: ["black"],
 };
 
 export default Product;
