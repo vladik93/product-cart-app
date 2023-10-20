@@ -15,15 +15,17 @@ useEffect(() => {
   
   return (
   <div className="cart">
-    <button className="cart-button" onClick={handleModalDisplay}>
+    <button className="cart-button"        onClick={handleModalDisplay}>
       C
     </button>
 
-    {isModalDisplayed && <div className="cart-modal">
-    <h1>Test</h1>
+<div className="cart-modal">
+<h1>Cart</h1>
+
+
+</div>
     
-    
-</div>}
+
   
   
   

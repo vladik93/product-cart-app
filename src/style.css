@@ -138,19 +138,26 @@ button {
 /* CART */
 
 .cart {
-  position: fixed;
-  width: 100%;
-  height:100%;
-  top:0;
+  position:relative;
+
 }
 
 .cart-button {
   padding: 2.4rem;
   border-radius: 50%;
   background: #333;
-  color: #fff;
+  color: #fff; 
+  position: fixed;
+  top: 0;
+  right:0; 
 }
 
 .cart-modal {
-  background: #fff
+  position: fixed;
+  background: #fff;
+  width: 80%;
+  top:  0;
+  height: 80vh;
+  margin: 0 auto
+  
 }
