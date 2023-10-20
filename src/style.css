@@ -24,6 +24,10 @@ body {
 button {
   cursor: pointer;
 }
+
+.app {
+  position: relative;
+}
 /* PRODUCTS */
 
 .product {
@@ -39,6 +43,10 @@ button {
   text-align: center;
   gap: 2rem;
   transition: all 0.3s ease-in;
+}
+
+.product.faded {
+  opacity: 0.5;
 }
 
 .product.unfocused > * :not(.increment) :not(.increment .icon) {
@@ -80,7 +88,8 @@ button {
   cursor: pointer;
 }
 
-.product-color:hover {
+.product.faded .product-color {
+  pointer-events: none;
 }
 
 .product-color.selected {
@@ -121,6 +130,21 @@ button {
 .product-button:disabled {
 }
 
+
 .product-button:hover {
   background-color: #888;
 }
+
+/* CART BUTTON */
+
+.cart-button {
+  padding: 2.4rem;
+  border-radius: 50%;
+  background: #333;
+  color: #fff;
+  position: fixed;
+  top: 0.8rem;
+  right: 0.8rem;
+  
+}
+

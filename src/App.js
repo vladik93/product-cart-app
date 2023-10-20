@@ -1,9 +1,12 @@
 import React from "react";
 import "./style.css";
 import Product from "./Product";
+import Cart from "./Cart";
 
 export default function App() {
   return (
+    <div className="app">
+      <Cart />
     <div className="product-panel">
       <Product
         title="Product 1"
@@ -44,5 +47,7 @@ export default function App() {
         amountInStock={5}
       />
     </div>
+      </div>
+      
   );
 }

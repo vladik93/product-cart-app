@@ -12,6 +12,8 @@ const Product = ({
   const [quantity, setQuantity] = useState(0);
   const [inStock, setInStock] = useState(amountInStock);
 
+
+
   useEffect(() => {
     console.log(inStock);
   }, [inStock]);
@@ -30,33 +32,50 @@ const Product = ({
   };
 
   const onProductIncr = () => {
-    setQuantity((prevState) => prevState + 1);
-    setInStock((prevState) => prevState - 1);
+    if (inStock > 0) {
+      setQuantity((prevState) => prevState + 1);
+      setInStock((prevCount) => prevCount - 1);
+    }
+
   };
 
   const onProductDecr = () => {
-    setQuantity((prevState) => {
-      if (prevState < 1) {
-        return 0;
-      } else {
-        return prevState - 1;
-      }
-    });
-    setInStock((prevState) => prevState - 1);
+    if (inStock < amountInStock) {
+      setQuantity((prevState) => {
+        if (prevState < 1) {
+          return 0;
+        } else {
+          return prevState - 1;
+        }
+      });
+      setInStock((prevCount) =>             prevCount + 1);
+    }
   };
 
+
+  const resetColorInStock = () => {
+    if(!inStock) {
+      setSelectedColor("")
+    }
+  }
+
+  useEffect(() => {
+    resetColorInStock();
+  }, [inStock])
+
+  
   return (
-    <div className="product">
+    <div className={`product ${!inStock ? "faded" : ""}`}>
       <div className="product-content">
         <img src="/item.jpg " className="product-img" />
         <div className="product-details">
           <h3>{title}</h3>
           <p>{description}</p>
           <div className="colors-container">
-            {colors.map((color) => {
+            {colors.map((color, index) => {
               if (selectedColor === "") {
                 return (
-                  <span
+                  <span key={index}
                     className="product-color"
                     style={{ backgroundColor: setColor(color) }}
                     onClick={() => setSelectedColor(color)}
@@ -65,9 +84,8 @@ const Product = ({
               } else {
                 return (
                   <span
-                    className={`product-color ${
-                      selectedColor === color ? "selected" : "unselected"
-                    }`}
+                    className={`product-color ${selectedColor === color ? "selected" : "unselected"
+                      }`}
                     style={{ backgroundColor: setColor(color) }}
                     onClick={() => setSelectedColor(color)}
                   ></span>
@@ -78,7 +96,7 @@ const Product = ({
           <p className="product-cost">
             ${cost} <span className="product-quantity">x {quantity}</span>
           </p>
-          <p>{inStock ? "In Stock!" : "Not In Stock"}</p>
+          {inStock ? <span style={{color: "#136c13"}}>In Stock!</span> : <span style={{color: "#d92626"}}>Not in Stock</span>}
         </div>
       </div>
       <div className="product-actions">
@@ -95,10 +113,6 @@ const Product = ({
       </div>
     </div>
   );
-};
-
-Product.defaultProps = {
-  colors: ["black"],
 };
 
 export default Product;
