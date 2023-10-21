@@ -7,16 +7,13 @@ const Product = ({
   colors = [],
   cost,
   amountInStock,
+  addToCart,
 }) => {
-  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedColor, setSelectedColor] = useState(colors[0]);
   const [quantity, setQuantity] = useState(0);
   const [inStock, setInStock] = useState(amountInStock);
-
-
-
-  useEffect(() => {
-    console.log(inStock);
-  }, [inStock]);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [addedToCart, setAddedToCart] = useState(false);
 
   const setColor = (color) => {
     let colors = {
@@ -31,12 +28,28 @@ const Product = ({
     return colors[color];
   };
 
+  const handleCartItem = () => {
+    if (quantity > 0) {
+      let item = {
+        itemId: id,
+        title: title,
+        description: description,
+        cost: cost,
+        quantity: quantity,
+        selectedColor: selectedColor ? selectedColor : colors[0],
+      };
+
+      setSelectedItem(item);
+    } else {
+      setSelectedItem(null);
+    }
+  };
+
   const onProductIncr = () => {
     if (inStock > 0) {
       setQuantity((prevState) => prevState + 1);
       setInStock((prevCount) => prevCount - 1);
     }
-
   };
 
   const onProductDecr = () => {
@@ -48,22 +61,43 @@ const Product = ({
           return prevState - 1;
         }
       });
-      setInStock((prevCount) =>             prevCount + 1);
+      setInStock((prevCount) => prevCount + 1);
     }
   };
 
-
   const resetColorInStock = () => {
-    if(!inStock) {
-      setSelectedColor("")
+    if (!inStock) {
+      setSelectedColor(null);
     }
-  }
+  };
+
+  const onItemColorChange = () => {
+    if (selectedItem) {
+      setSelectedItem((prevState) => {
+        return {
+          ...prevState,
+          selectedColor: selectedColor,
+        };
+      });
+    }
+  };
 
   useEffect(() => {
     resetColorInStock();
-  }, [inStock])
+  }, [inStock]);
 
-  
+  useEffect(() => {
+    handleCartItem();
+  }, [quantity]);
+
+  useEffect(() => {
+    onItemColorChange();
+  }, [selectedColor]);
+
+  useEffect(() => {
+    addToCart(selectedItem);
+  }, [selectedItem]);
+
   return (
     <div className={`product ${!inStock ? "faded" : ""}`}>
       <div className="product-content">
@@ -75,7 +109,9 @@ const Product = ({
             {colors.map((color, index) => {
               if (selectedColor === "") {
                 return (
-                  <span key={index}
+                  <span
+                    key={index}
+                    id={index}
                     className="product-color"
                     style={{ backgroundColor: setColor(color) }}
                     onClick={() => setSelectedColor(color)}
@@ -84,8 +120,9 @@ const Product = ({
               } else {
                 return (
                   <span
-                    className={`product-color ${selectedColor === color ? "selected" : "unselected"
-                      }`}
+                    className={`product-color ${
+                      selectedColor === color ? "selected" : "unselected"
+                    }`}
                     style={{ backgroundColor: setColor(color) }}
                     onClick={() => setSelectedColor(color)}
                   ></span>
@@ -96,7 +133,11 @@ const Product = ({
           <p className="product-cost">
             ${cost} <span className="product-quantity">x {quantity}</span>
           </p>
-          {inStock ? <span style={{color: "#136c13"}}>In Stock!</span> : <span style={{color: "#d92626"}}>Not in Stock</span>}
+          {inStock ? (
+            <span style={{ color: "#136c13" }}>In Stock!</span>
+          ) : (
+            <span style={{ color: "#d92626" }}>Not in Stock</span>
+          )}
         </div>
       </div>
       <div className="product-actions">
