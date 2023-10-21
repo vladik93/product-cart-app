@@ -94,6 +94,7 @@ button {
 
 .product-color.selected {
   opacity: 1;
+
 }
 
 .product-color.unselected {
@@ -156,8 +157,11 @@ button {
   position: fixed;
   background: #fff;
   width: 80%;
-  top:  0;
   height: 80vh;
-  margin: 0 auto
+  transform: translateX(50%);
+ 
+  
+  
+  
   
 }

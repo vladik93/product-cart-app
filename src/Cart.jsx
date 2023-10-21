@@ -1,39 +1,39 @@
-import React,{useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 
 const Cart = () => {
   const [isModalDisplayed, setIsModalDisplayed] = useState(false);
 
-useEffect(() => {
-  console.log(isModalDisplayed);
-  
-}, [isModalDisplayed])
+  useEffect(() => {
+    console.log(isModalDisplayed);
 
-  
-  const handleModalDisplay = (item) => {
-  setIsModalDisplayed(true);
+  }, [isModalDisplayed])
+
+
+  const handleModalDisplay = () => {
+    setIsModalDisplayed(!isModalDisplayed);
   }
-  
+
   return (
-  <div className="cart">
-    <button className="cart-button"        onClick={handleModalDisplay}>
-      C
-    </button>
+    <div className="cart">
+      <button className="cart-button" onClick={handleModalDisplay}>
+        C
+      </button>
 
-<div className="cart-modal">
-<h1>Cart</h1>
+      {isModalDisplayed && <div className="cart-modal">
+        <h3>Hello</h3>
 
 
-</div>
-    
+      </div>}
 
-  
-  
-  
-  
-  
-  </div>
-  
-  
+
+
+
+
+
+
+    </div>
+
+
   )
 }
 
