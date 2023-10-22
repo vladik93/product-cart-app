@@ -28,27 +28,26 @@ const Product = ({
     return colors[color];
   };
 
-  const handleCartItem = () => {
-    if (quantity > 0) {
+  const onProductIncr = () => {
+    if (quantity === 0) {
+      setQuantity((prevState) => prevState + 1);
+
       let item = {
-        itemId: id,
+        id: id,
         title: title,
         description: description,
         cost: cost,
-        quantity: quantity,
+        quantity: 1,
         selectedColor: selectedColor ? selectedColor : colors[0],
       };
 
-      setSelectedItem(item);
+      addToCart(item);
     } else {
-      setSelectedItem(null);
-    }
-  };
+      setQuantity(quantity + 1);
 
-  const onProductIncr = () => {
-    if (inStock > 0) {
-      setQuantity((prevState) => prevState + 1);
-      setInStock((prevCount) => prevCount - 1);
+      setSelectedItem((prevState) => {
+        return { ...prevState, quantity: quantity + 1 };
+      });
     }
   };
 
@@ -85,10 +84,6 @@ const Product = ({
   useEffect(() => {
     resetColorInStock();
   }, [inStock]);
-
-  useEffect(() => {
-    handleCartItem();
-  }, [quantity]);
 
   useEffect(() => {
     onItemColorChange();

@@ -7,7 +7,16 @@ import Cart from "./Cart";
 export default function App() {
   const [cartItems, setCartItems] = useState([]);
 
+  useEffect(() => {
+    console.log(cartItems);
+  }, [cartItems]);
+
   const addToCart = (cartItem) => {
+    setCartItems((prevState) => {
+      let filtered = prevState.filter((x) => x != null);
+
+      return [...filtered, cartItem];
+    });
     // let filteredArray = cartItems.lengthcartItems.filter(
     //   (x) => x.itemId === cartItem.itemId
     // );
